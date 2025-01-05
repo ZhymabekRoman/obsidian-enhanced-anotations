@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lorem Ipsum</title>
+    <style>
+        .marked-text {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .popover {
+            display: none;
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            font-size: 12px;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            width: 200px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        .popovers-container {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: -40px;
+        }
+
+        .popovers-container .popover {
+            position: relative;
+            margin-bottom: 10px;
+            left: 0;
+            transform: none;
+        }
+
+        .marked-text:hover .popover {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div style="padding: 100px;">
+        <span class="marked-text">Lorem ipsum dolor sit amet
+            <div class="popover">This is a sample annotation for the marked text</div>
+        </span>
+        
+        <span class="marked-text" data-popover-id="pop1">consectetur adipiscing elit</span>
+        
+        <span class="marked-text">important concept
+            <div class="popover">First key point</div>
+        </span>
+        <span class="marked-text">related idea
+            <div class="popover">Supporting information</div>
+        </span>
+        
+        <span class="marked-text">technical term
+            <div class="popover">
+                <strong>Definition:</strong><br>
+                A detailed explanation with:
+                <ul>
+                    <li>Key point 1</li>
+                    <li>Key point 2</li>
+                </ul>
+            </div>
+        </span>
+        
+        <div class="annotation-group">
+            <span class="marked-text" data-popover-id="group1-1">First part</span>
+            <span class="marked-text" data-popover-id="group1-2">Second part</span>
+            <span class="marked-text" data-popover-id="group1-3">Third part</span>
+        </div>
+
+        , sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
+    </div>
+
+    <div id="external-popovers" style="display: none;">
+        <div id="pop1" class="popover">This is an external annotation</div>
+        <div id="group1-1" class="popover">Part 1 explanation</div>
+        <div id="group1-2" class="popover">Part 2 explanation</div>
+        <div id="group1-3" class="popover">Part 3 explanation</div>
+    </div>
+
+    <span class="marked-text">multiple annotations
+        <div class="popovers-container">
+            <div class="popover">First annotation about this text</div>
+            <div class="popover">Second annotation with different context</div>
+            <div class="popover">Third annotation providing more details</div>
+        </div>
+    </span>
+
+    <script>
+        function getRandomPastelColor() {
+            const hue = Math.random() * 360;
+            const saturation = 70 + Math.random() * 10;
+            const lightness = 85 + Math.random() * 10;
+            return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const markedTexts = document.querySelectorAll('.marked-text');
+            
+            markedTexts.forEach(element => {
+                element.style.backgroundColor = getRandomPastelColor();
+                
+                const popoverId = element.getAttribute('data-popover-id');
+                if (popoverId) {
+                    const externalPopovers = document.querySelectorAll(`[id^="${popoverId}"]`);
+                    if (externalPopovers.length > 0) {
+                        const container = document.createElement('div');
+                        container.className = 'popovers-container';
+                        externalPopovers.forEach(popover => {
+                            container.appendChild(popover.cloneNode(true));
+                        });
+                        element.appendChild(container);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

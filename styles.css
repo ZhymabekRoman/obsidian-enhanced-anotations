@@ -1,0 +1,67 @@
+.annotation-container {
+	padding: 0 2px;
+	border-radius: 3px;
+	position: relative;
+	cursor: pointer;
+	display: inline-block;
+}
+
+.annotation-container .popover {
+	display: none;
+	position: absolute;
+	border: 1px solid var(--background-modifier-border);
+	padding: 8px;
+	border-radius: 4px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	width: 200px;
+	left: 50%;
+	transform: translateX(-50%);
+	top: calc(100% + 5px);
+	z-index: 1000;
+	font-size: 0.9em;
+	background-color: var(--background-primary);
+}
+
+.annotation-container:hover .popover {
+	display: block;
+}
+
+.annotation-container .popovers-container {
+	display: none;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	top: calc(100% + 5px);
+	z-index: 1000;
+}
+
+.annotation-container:hover .popovers-container {
+	display: block;
+}
+
+.annotation-container .popovers-container .popover {
+	position: relative;
+	display: block;
+	margin-bottom: 5px;
+	left: 0;
+	transform: none;
+	top: 0;
+}
+
+.cm-formatting-link.cm-formatting-link-start
+	+ .cm-formatting-link
+	+ .cm-link[href^="#pop-"],
+.cm-formatting-link.cm-formatting-link-end
+	+ .cm-formatting-link
+	+ .cm-link[href^="#pop-"],
+.cm-html-embed div[id^="pop-"] {
+	font-style: italic;
+	border-bottom: 1px dotted var(--text-muted);
+	color: var(--text-muted);
+	text-decoration: none;
+}
+
+.annotation-container[data-popover-ref^="pop-"] {
+	border-bottom: 1px dotted var(--text-muted);
+	font-style: italic;
+}

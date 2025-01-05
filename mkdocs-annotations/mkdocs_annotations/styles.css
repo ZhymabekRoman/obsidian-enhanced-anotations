@@ -1,0 +1,126 @@
+#pop-definition {
+	display: none;
+}
+
+.annotation-container {
+	padding: 0 2px;
+	border-radius: 3px;
+	position: relative;
+	cursor: pointer;
+	display: inline-block;
+	background-color: hsla(60, 75%, 90%, 0.5);
+}
+
+/* Dark theme support */
+[data-md-color-scheme="slate"] .annotation-container {
+	background-color: hsla(60, 75%, 20%, 0.5);
+}
+
+.annotation-container .popover {
+	display: none;
+	position: absolute;
+	border: 1px solid var(--md-default-fg-color--lighter, #ccc);
+	padding: 8px;
+	border-radius: 4px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	width: 200px;
+	left: 50%;
+	transform: translateX(-50%);
+	top: calc(100% + 5px);
+	z-index: 1000;
+	font-size: 0.9em;
+	background-color: var(--md-default-bg-color, white);
+	color: var(--md-default-fg-color, black);
+}
+
+/* Show popover on hover for desktop */
+@media (hover: hover) {
+	.popover,
+	.popovers-container {
+		display: block;
+	}
+}
+
+/* Show popover on tap for mobile */
+.annotation-container.active .popover,
+.annotation-container.active .popovers-container {
+	display: block;
+}
+
+.popovers-container {
+	display: none;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	top: calc(100% + 5px);
+	z-index: 1000;
+}
+
+.popovers-container .popover {
+	position: relative;
+	display: block;
+	margin-bottom: 5px;
+	left: 0;
+	transform: none;
+	top: 0;
+}
+
+/* Position popover above text if too close to bottom of viewport */
+.annotation-container .popover.above {
+	top: auto;
+	bottom: calc(100% + 5px);
+}
+
+/* Arrow indicators */
+.annotation-container .popover::before {
+	content: "";
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	border: 8px solid transparent;
+	border-bottom-color: #ccc;
+	top: -16px;
+}
+
+.annotation-container .popover::after {
+	content: "";
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	border: 7px solid transparent;
+	border-bottom-color: white;
+	top: -14px;
+}
+
+.annotation-container .popover.above::before {
+	border-top-color: #ccc;
+	border-bottom-color: transparent;
+	top: auto;
+	bottom: -16px;
+}
+
+.annotation-container .popover.above::after {
+	border-top-color: white;
+	border-bottom-color: transparent;
+	top: auto;
+	bottom: -14px;
+}
+
+/* Dark theme arrow indicators */
+[data-md-color-scheme="slate"] .annotation-container .popover::before {
+	border-bottom-color: var(--md-default-fg-color--lighter, #ccc);
+}
+
+[data-md-color-scheme="slate"] .annotation-container .popover::after {
+	border-bottom-color: var(--md-default-bg-color, #2e303e);
+}
+
+[data-md-color-scheme="slate"] .annotation-container .popover.above::before {
+	border-top-color: var(--md-default-fg-color--lighter, #ccc);
+	border-bottom-color: transparent;
+}
+
+[data-md-color-scheme="slate"] .annotation-container .popover.above::after {
+	border-top-color: var(--md-default-bg-color, #2e303e);
+	border-bottom-color: transparent;
+}
