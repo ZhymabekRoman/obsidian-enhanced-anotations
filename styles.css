@@ -22,10 +22,6 @@
 	background-color: var(--background-primary);
 }
 
-.annotation-container:hover .popover {
-	display: block;
-}
-
 .annotation-container .popovers-container {
 	display: none;
 	position: absolute;
@@ -33,10 +29,6 @@
 	transform: translateX(-50%);
 	top: calc(100% + 5px);
 	z-index: 1000;
-}
-
-.annotation-container:hover .popovers-container {
-	display: block;
 }
 
 .annotation-container .popovers-container .popover {

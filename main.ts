@@ -91,6 +91,15 @@ export default class AnnotationPlugin extends Plugin {
 		return `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
 	}
 
+	private convertLinksToAnchors(text: string): string {
+		const urlRegex = /(https?:\/\/[^\s]+)/g;
+		return text.replace(
+			urlRegex,
+			(url) =>
+				`<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`,
+		);
+	}
+
 	private createAnnotationContainer(
 		text: string,
 		annotations: string[],
@@ -105,6 +114,7 @@ export default class AnnotationPlugin extends Plugin {
 
 		const popoversContainer = document.createElement("div");
 		popoversContainer.className = "popovers-container";
+		popoversContainer.style.display = "none";
 
 		annotations.forEach((annotation) => {
 			const popover = document.createElement("div");
@@ -116,16 +126,32 @@ export default class AnnotationPlugin extends Plugin {
 					this.externalPopovers.get(popoverId) ||
 					document.getElementById(popoverId);
 				if (externalPopover) {
-					const popoverContent = externalPopover.cloneNode(true) as HTMLElement;
-					popover.innerHTML = popoverContent.innerHTML;
+					popover.innerHTML = this.convertLinksToAnchors(
+						externalPopover.innerHTML,
+					);
 				} else {
-					popover.textContent = annotation;
+					popover.innerHTML = this.convertLinksToAnchors(annotation);
 				}
 			} else {
-				popover.textContent = annotation;
+				popover.innerHTML = this.convertLinksToAnchors(annotation);
 			}
 
 			popoversContainer.appendChild(popover);
+		});
+
+		container.addEventListener("click", (e) => {
+			e.stopPropagation();
+			const isOpen = popoversContainer.style.display === "block";
+
+			document.querySelectorAll(".popovers-container").forEach((el) => {
+				(el as HTMLElement).style.display = "none";
+			});
+
+			popoversContainer.style.display = isOpen ? "none" : "block";
+		});
+
+		document.addEventListener("click", () => {
+			popoversContainer.style.display = "none";
 		});
 
 		container.appendChild(popoversContainer);

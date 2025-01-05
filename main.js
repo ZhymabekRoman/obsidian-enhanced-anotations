@@ -112,6 +112,10 @@ var AnnotationPlugin = class extends import_obsidian.Plugin {
     const alpha = 0.3;
     return `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
   }
+  convertLinksToAnchors(text) {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, (url) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`);
+  }
   createAnnotationContainer(text, annotations) {
     const container = document.createElement("span");
     container.className = "annotation-container";
@@ -119,6 +123,7 @@ var AnnotationPlugin = class extends import_obsidian.Plugin {
     container.textContent = text;
     const popoversContainer = document.createElement("div");
     popoversContainer.className = "popovers-container";
+    popoversContainer.style.display = "none";
     annotations.forEach((annotation) => {
       const popover = document.createElement("div");
       popover.className = "popover";
@@ -126,15 +131,25 @@ var AnnotationPlugin = class extends import_obsidian.Plugin {
         const popoverId = annotation.substring(1);
         const externalPopover = this.externalPopovers.get(popoverId) || document.getElementById(popoverId);
         if (externalPopover) {
-          const popoverContent = externalPopover.cloneNode(true);
-          popover.innerHTML = popoverContent.innerHTML;
+          popover.innerHTML = this.convertLinksToAnchors(externalPopover.innerHTML);
         } else {
-          popover.textContent = annotation;
+          popover.innerHTML = this.convertLinksToAnchors(annotation);
         }
       } else {
-        popover.textContent = annotation;
+        popover.innerHTML = this.convertLinksToAnchors(annotation);
       }
       popoversContainer.appendChild(popover);
+    });
+    container.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = popoversContainer.style.display === "block";
+      document.querySelectorAll(".popovers-container").forEach((el) => {
+        el.style.display = "none";
+      });
+      popoversContainer.style.display = isOpen ? "none" : "block";
+    });
+    document.addEventListener("click", () => {
+      popoversContainer.style.display = "none";
     });
     container.appendChild(popoversContainer);
     return container;
